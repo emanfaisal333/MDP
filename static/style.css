@@ -1,1 +1,158 @@
+:root {
+    --goal: #2ecc71;
+    --trap: #e74c3c;
+    --blue: #3498db;
+    --obs-dark-grey: #7f8c8d;
+    --bg-light: #f4f7f6;
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+h1 {
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Dashboard Container */
+.dashboard {
+    display: flex;
+    flex-direction: column; /* Mobile first: stack vertically */
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Control Panel Styling */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 1rem;
+}
+
+/* Restoring the look of Gamma and Buttons */
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--trap); /* Red accent as seen in image */
+}
+
+button {
+    padding: 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: transform 0.1s, opacity 0.2s;
+}
+
+.step-btn {
+    background: var(--blue);
+    color: white;
+}
+
+.reset-btn {
+    background: #95a5a6;
+    color: white;
+}
+
+button:active { transform: scale(0.98); }
+
+#stats {
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Grid World Styling */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: #bdc3c7;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.cell {
+    aspect-ratio: 1 / 1;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+}
+
+.value-label { font-size: clamp(10px, 2.5vw, 14px); font-weight: bold; color: #7f8c8d; }
+.arrow { font-size: clamp(20px, 5vw, 32px); color: #2c3e50; }
+
+/* Special States */
+.goal { background-color: var(--goal) !important; color: white; }
+.trap { background-color: var(--trap) !important; color: white; }
+.obstacle { background-color: var(--obs-dark-grey) !important; }
+
+/* Hide arrows/values in special states */
+.obstacle .value-label, .obstacle .arrow, .goal .arrow, .trap .arrow { display: none !important; }
+.goal .value-label, .trap .value-label { color: white; opacity: 0.8; }
+
+/* Desktop View: Restoring Sidebar Alignment */
+@media (min-width: 850px) {
+    .dashboard {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: 40px;
+    }
+
+    .controls {
+        width: 320px;
+        min-width: 320px;
+    }
+
+    .grid-container {
+        margin: 0;
+        flex-grow: 1;
+    }
+}

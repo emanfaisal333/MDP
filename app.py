@@ -10,17 +10,12 @@ def index():
 
 @app.route('/get_state', methods=['GET'])
 def get_state():
-    # Show initial 0.0 values and 'UP' default arrows [cite: 23, 24]
-    return jsonify({
-        'values': mdp.V.tolist(),
-        'policy': mdp.get_current_policy(),
-        'delta': 0
-    })
+    return jsonify({'values': mdp.V.tolist(), 'policy': mdp.get_current_policy(), 'delta': 0})
 
 @app.route('/step', methods=['POST'])
 def step():
     data = request.json
-    mdp.gamma = float(data.get('gamma', 0.9)) # User-controlled [cite: 17]
+    mdp.gamma = float(data.get('gamma', 0.9))
     algo = data.get('algorithm', 'value')
     
     if algo == 'value':
@@ -32,9 +27,16 @@ def step():
         
     return jsonify({'values': values, 'policy': policy, 'delta': delta})
 
-@app.route('/reset', methods=['POST'])
-def reset():
-    mdp.reset()
+@app.route('/clear_values', methods=['POST'])
+def clear_values():
+    """Reset values/iteration but KEEP the current obstacles."""
+    mdp.reset_values()
+    return jsonify({'status': 'success'})
+
+@app.route('/reset_env', methods=['POST'])
+def reset_env():
+    """Generate a completely NEW map with new obstacles."""
+    mdp.reset_env()
     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
