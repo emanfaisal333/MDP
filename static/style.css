@@ -3,15 +3,20 @@
     --trap: #e74c3c;
     --blue: #3498db;
     --obs-dark-grey: #7f8c8d;
-    --bg-light: #f4f7f6;
+    
+    /* THEME COLORS */
+    --primary-green: #2ecc71; /* Light green for buttons and slider */
+    --app-bg: #dfe6e9;       /* Main page background */
+    --grid-bg: #2c3e50;      /* Grid lines/background */
+    --cell-bg: #ffffff;      /* Individual cell background */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg-light);
-    display: flex;
+    background: var(--app-bg);
+    display: flex; 
     flex-direction: column;
     align-items: center;
     padding: 20px;
@@ -21,14 +26,13 @@ body {
 h1 {
     margin-bottom: 25px;
     font-size: 1.8rem;
-    color: #333;
+    color: #2d3436;
     font-weight: bold;
 }
 
-/* Dashboard Container */
 .dashboard {
     display: flex;
-    flex-direction: column; /* Mobile first: stack vertically */
+    flex-direction: column; /* Stacks vertically on mobile */
     gap: 30px;
     background: white;
     padding: 30px;
@@ -38,7 +42,6 @@ h1 {
     max-width: 1000px;
 }
 
-/* Control Panel Styling */
 .controls {
     display: flex;
     flex-direction: column;
@@ -66,12 +69,14 @@ select {
     font-size: 1rem;
 }
 
-/* Restoring the look of Gamma and Buttons */
+/* SLIDER STYLING */
 input[type="range"] {
     width: 100%;
-    accent-color: var(--trap); /* Red accent as seen in image */
+    accent-color: var(--primary-green); /* Light green slider */
+    cursor: pointer;
 }
 
+/* BUTTON STYLING */
 button {
     padding: 15px;
     cursor: pointer;
@@ -79,37 +84,38 @@ button {
     border-radius: 8px;
     font-weight: bold;
     font-size: 1.1rem;
-    transition: transform 0.1s, opacity 0.2s;
-}
-
-.step-btn {
-    background: var(--blue);
     color: white;
-}
-
-.reset-btn {
-    background: #95a5a6;
-    color: white;
+    transition: background 0.3s ease, transform 0.1s;
 }
 
 button:active { transform: scale(0.98); }
+
+.step-btn { 
+    background: var(--primary-green); /* Light green button */
+}
+
+.step-btn:hover { background: #27ae60; }
+
+.reset-btn { 
+    background: #636e72; 
+}
 
 #stats {
     padding: 15px;
     background: #f8f9fa;
     border-radius: 8px;
     font-size: 1rem;
-    line-height: 1.6;
     color: #555;
+    line-height: 1.6;
 }
 
-/* Grid World Styling */
+/* GRID WORLD STYLING */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    background: #bdc3c7;
-    padding: 10px;
+    gap: 8px;
+    background: var(--grid-bg);
+    padding: 8px;
     border-radius: 10px;
     width: 100%;
     max-width: 500px;
@@ -118,39 +124,36 @@ button:active { transform: scale(0.98); }
 
 .cell {
     aspect-ratio: 1 / 1;
-    background: white;
+    background: var(--cell-bg);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
-.value-label { font-size: clamp(10px, 2.5vw, 14px); font-weight: bold; color: #7f8c8d; }
-.arrow { font-size: clamp(20px, 5vw, 32px); color: #2c3e50; }
+.value-label { font-size: clamp(10px, 2.5vw, 14px); font-weight: bold; color: #636e72; }
+.arrow { font-size: clamp(20px, 5vw, 32px); color: #2d3436; }
 
-/* Special States */
+/* SPECIAL STATES */
 .goal { background-color: var(--goal) !important; color: white; }
 .trap { background-color: var(--trap) !important; color: white; }
 .obstacle { background-color: var(--obs-dark-grey) !important; }
 
-/* Hide arrows/values in special states */
+/* Hide specific elements in obstacles/terminals */
 .obstacle .value-label, .obstacle .arrow, .goal .arrow, .trap .arrow { display: none !important; }
-.goal .value-label, .trap .value-label { color: white; opacity: 0.8; }
+.goal .value-label, .trap .value-label { color: white; }
 
-/* Desktop View: Restoring Sidebar Alignment */
+/* DESKTOP RESPONSIVENESS */
 @media (min-width: 850px) {
     .dashboard {
         flex-direction: row;
         align-items: flex-start;
-        padding: 40px;
     }
-
     .controls {
         width: 320px;
         min-width: 320px;
     }
-
     .grid-container {
         margin: 0;
         flex-grow: 1;

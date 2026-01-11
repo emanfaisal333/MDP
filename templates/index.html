@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MDP: Value & Policy Iteration</title>
+    <title>MDP Visualization: Value & Policy Iteration</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
@@ -43,13 +43,14 @@
     <script>
         let iteration = 0;
 
+        // Load initial state on page start
         window.onload = async () => {
             const res = await fetch('/get_state');
             updateUI(await res.json());
         };
 
+        // Resets values but keeps obstacles when algorithm changes
         async function handleAlgoChange() {
-            // Clears iterations but does NOT change obstacle positions
             await fetch('/clear_values', { method: 'POST' });
             iteration = 0;
             resetUIState();
@@ -57,8 +58,8 @@
             updateUI(await res.json());
         }
 
+        // Generates completely new obstacles
         async function resetEnvironment() {
-            // Generates NEW obstacles
             await fetch('/reset_env', { method: 'POST' });
             iteration = 0;
             resetUIState();
@@ -108,21 +109,45 @@
                     cell.className = 'cell';
                     const dir = data.policy[r][c];
 
-                    if (r === 0 && c === 3) cell.classList.add('goal');
-                    else if (r === 1 && c === 3) cell.classList.add('trap');
-                    else if (dir === 'OBS') cell.classList.add('obstacle');
+                    let rewardDisplay = val.toFixed(2);
+                    const isGoal = (r === 0 && c === 3);
+                    const isTrap = (r === 1 && c === 3);
+                    const isObstacle = (dir === 'OBS');
+
+                    if (isGoal) {
+                        cell.classList.add('goal');
+                        rewardDisplay = "+10.00"; // Explicit Goal Reward
+                    } else if (isTrap) {
+                        cell.classList.add('trap');
+                        rewardDisplay = "-10.00"; // Explicit Trap Penalty
+                    } else if (isObstacle) {
+                        cell.classList.add('obstacle');
+                    }
                     
-                    if (!cell.classList.contains('goal') && !cell.classList.contains('trap') && !cell.classList.contains('obstacle')) {
-                        const intensity = Math.min(255, Math.max(180, 255 - (val * 15)));
-                        cell.style.backgroundColor = `rgb(${intensity}, ${intensity + 10}, 255)`;
+                    // Heatmap color logic for standard navigable cells
+                    if (!isGoal && !isTrap && !isObstacle) {
+                        // 1. Calculate color intensity based on the state value
+                        let colorScale = Math.min(200, val * 40); 
+                        
+                        // 2. RGB Logic: 
+                        // High values: Lower Red/Blue (255 - scale) makes it deep green
+                        // Low values: Higher Red/Blue (close to 255) makes it white/light green
+                        let intensity = Math.max(50, 255 - colorScale);
+                        
+                        if (val >= 0) {
+                            // Green Scale: RGB(Light, 255, Light)
+                            cell.style.backgroundColor = `rgb(${intensity}, 255, ${intensity})`;
+                        } else {
+                            // Negative values: Red/Orange Scale for "danger"
+                            let redIntensity = Math.max(50, 255 - (Math.abs(val) * 40));
+                            cell.style.backgroundColor = `rgb(255, ${redIntensity}, ${redIntensity})`;
+                        }
                     }
 
-                    const isObstacle = cell.classList.contains('obstacle');
-                    const isTerminal = cell.classList.contains('goal') || cell.classList.contains('trap');
-
+                    // Hide arrows for obstacles and terminals
                     cell.innerHTML = `
-                        <div class="value-label">${isObstacle ? '' : val.toFixed(2)}</div>
-                        <div class="arrow">${(isObstacle || isTerminal) ? '' : (arrows[dir] || '')}</div>
+                        <div class="value-label">${isObstacle ? '' : rewardDisplay}</div>
+                        <div class="arrow">${(isObstacle || isGoal || isTrap) ? '' : (arrows[dir] || '')}</div>
                     `;
                     grid.appendChild(cell);
                 });
