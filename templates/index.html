@@ -26,6 +26,7 @@
             </div>
 
             <button class="step-btn" onclick="runStep()">Step Iteration</button>
+            <button class="reset-vals-btn" onclick="resetValues()">Reset Values (Keep Map)</button>
             <button class="reset-btn" onclick="resetEnvironment()">New Map (Reset Env)</button>
             
             <div id="stats">
@@ -43,13 +44,11 @@
     <script>
         let iteration = 0;
 
-        // Load initial state on page start
         window.onload = async () => {
             const res = await fetch('/get_state');
             updateUI(await res.json());
         };
 
-        // Resets values but keeps obstacles when algorithm changes
         async function handleAlgoChange() {
             await fetch('/clear_values', { method: 'POST' });
             iteration = 0;
@@ -58,7 +57,14 @@
             updateUI(await res.json());
         }
 
-        // Generates completely new obstacles
+        async function resetValues() {
+            await fetch('/clear_values', { method: 'POST' });
+            iteration = 0;
+            resetUIState();
+            const res = await fetch('/get_state');
+            updateUI(await res.json());
+        }
+
         async function resetEnvironment() {
             await fetch('/reset_env', { method: 'POST' });
             iteration = 0;
@@ -116,35 +122,17 @@
 
                     if (isGoal) {
                         cell.classList.add('goal');
-                        rewardDisplay = "+10.00"; // Explicit Goal Reward
+                        rewardDisplay = "+10.00";
                     } else if (isTrap) {
                         cell.classList.add('trap');
-                        rewardDisplay = "-10.00"; // Explicit Trap Penalty
+                        rewardDisplay = "-10.00";
                     } else if (isObstacle) {
                         cell.classList.add('obstacle');
                     }
                     
-                    // Heatmap color logic for standard navigable cells
-                    if (!isGoal && !isTrap && !isObstacle) {
-                        // 1. Calculate color intensity based on the state value
-                        let colorScale = Math.min(200, val * 40); 
-                        
-                        // 2. RGB Logic: 
-                        // High values: Lower Red/Blue (255 - scale) makes it deep green
-                        // Low values: Higher Red/Blue (close to 255) makes it white/light green
-                        let intensity = Math.max(50, 255 - colorScale);
-                        
-                        if (val >= 0) {
-                            // Green Scale: RGB(Light, 255, Light)
-                            cell.style.backgroundColor = `rgb(${intensity}, 255, ${intensity})`;
-                        } else {
-                            // Negative values: Red/Orange Scale for "danger"
-                            let redIntensity = Math.max(50, 255 - (Math.abs(val) * 40));
-                            cell.style.backgroundColor = `rgb(255, ${redIntensity}, ${redIntensity})`;
-                        }
-                    }
+                    // HEATMAP LOGIC REMOVED HERE
+                    // Cells will now default to white via CSS
 
-                    // Hide arrows for obstacles and terminals
                     cell.innerHTML = `
                         <div class="value-label">${isObstacle ? '' : rewardDisplay}</div>
                         <div class="arrow">${(isObstacle || isGoal || isTrap) ? '' : (arrows[dir] || '')}</div>
