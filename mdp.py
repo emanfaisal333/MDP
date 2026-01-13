@@ -135,7 +135,7 @@ class GridWorldMDP:
             for c in range(self.cols):
                 if (r, c) in self.terminals: row.append('TERM')
                 elif (r, c) in self.obstacles: row.append('OBS')
-                elif np.all(self.V == 0): row.append('UP')
+                elif np.count_nonzero(self.V) <= len(self.terminals): row.append('UP')
                 else:
                     # Calculate best action based on current V (One-step lookahead)
                     best_a, max_q = 'UP', -float('inf')
