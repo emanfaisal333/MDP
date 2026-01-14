@@ -2,20 +2,20 @@ import numpy as np
 import random
 
 class GridWorldMDP:
-    def __init__(self, rows=4, cols=4, gamma=0.9):
+    def __init__(self, rows=6, cols=6, gamma=0.9):
         self.rows = rows
         self.cols = cols
         self.gamma = gamma
         self.actions = ['UP', 'DOWN', 'LEFT', 'RIGHT']
         self.prob_success = 0.8
         self.prob_random = 0.2  
-        self.terminals = [(0, 3), (1, 3)] #(0, 3) is the Goal and (1, 3) is the Trap
+        self.terminals = [(0, 5), (1, 5)] 
         self.obstacles = []
         self.reset_env()
 
     def reset_env(self):
         self.obstacles = []
-        num_obstacles = random.randint(0, 3)
+        num_obstacles = random.randint(2, 6)
         
         while len(self.obstacles) < num_obstacles:
             r = random.randint(0, self.rows - 1)
@@ -29,15 +29,15 @@ class GridWorldMDP:
     def reset_values(self):
         """Resets iteration data while keeping current map."""
         self.V = np.zeros((self.rows, self.cols))
-        self.V[0, 3] = 10.0   # Goal Value
-        self.V[1, 3] = -10.0  # Trap Value
+        self.V[0, 5] = 10.0   # Goal Value
+        self.V[1, 5] = -10.0  # Trap Value
         self.policy = [['UP' for _ in range(self.cols)] for _ in range(self.rows)]
         for r, c in self.terminals: self.policy[r][c] = 'TERM'
         for r, c in self.obstacles: self.policy[r][c] = 'OBS'
 
     def get_reward(self, r, c):
-        if (r, c) == (0, 3): return 10.0
-        if (r, c) == (1, 3): return -10.0
+        if (r, c) == (0, 5): return 10.0
+        if (r, c) == (1, 5): return -10.0
         return -0.1
 
     def get_next_state(self, r, c, action):

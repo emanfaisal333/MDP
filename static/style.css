@@ -117,13 +117,14 @@ button:active { transform: scale(0.98); }
 /* GRID WORLD STYLING */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* Change repeat(4, 1fr) to repeat(6, 1fr) */
+    grid-template-columns: repeat(6, 1fr); 
     gap: 8px;
     background: var(--grid-bg);
     padding: 8px;
     border-radius: 10px;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px; /* Increased max-width for the larger 6x6 grid */
     margin: 0 auto;
 }
 

@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from mdp import GridWorldMDP
 
 app = Flask(__name__)
-mdp = GridWorldMDP()
+mdp = GridWorldMDP(rows=6, cols=6)
 
 @app.route('/')
 def index():
