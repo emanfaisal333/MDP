@@ -28,23 +28,61 @@ Follow these steps to run the project locally.
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/yourusername/mdp-visualization.git](https://github.com/yourusername/mdp-visualization.git)
+git clone https://github.com/emanfaisal333/MDP.git
+cd mdp-visualization
+
 ```
 
-### 2. Install Dependencies
+### 2. Set up a Virtual Environment (Optional but Recommended)
+
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
+
+```
+
+### 3. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
+
 ```
 
-### 3. Run the Application
+### 4. Run the Application
+
 ```bash
 python app.py
+
 ```
 
 ### 5. Open in Browser
-Visit http://127.0.0.1:5000 in your web browser.
 
-## Project Setup
+Visit `http://127.0.0.1:5000` in your web browser.
+
+## 🎮 How to Use
+
+1. **Select Algorithm:** Choose between "Value Iteration" or "Policy Iteration" from the dropdown.
+2. **Set Gamma:** Use the slider to set the Discount Factor.
+* *Low (e.g., 0.1):* Agent is short-sighted.
+* *High (e.g., 0.9):* Agent plans for the long term.
+
+
+3. **Step Iteration:** Click the button to run one loop of the algorithm. Watch the values update and arrows change.
+4. **Check Convergence:** Continue stepping until the "Optimal Policy Reached!" message appears.
+5. **Reset:**
+* **Reset Values:** Clears the calculated numbers but keeps the walls/obstacles.
+* **New Map:** Generates a completely new random arrangement of obstacles.
+
+
+
+## 📂 Project Structure
+
+```plaintext
 ├── app.py              # Flask server handling routes and API logic
 ├── mdp.py              # Core MDP logic (Transition models, Algorithms)
 ├── requirements.txt    # List of python dependencies
@@ -52,3 +90,22 @@ Visit http://127.0.0.1:5000 in your web browser.
 │   └── style.css       # Styling for the Grid and UI
 └── templates/
     └── index.html      # Frontend interface
+
+```
+
+## 🧠 Algorithms Explained
+
+### Value Iteration
+
+Calculates the utility of every state by iteratively applying the **Bellman Update Equation**. It propagates rewards from the goal state outwards until the values stabilize (converge).
+
+
+### Policy Iteration
+
+Alternates between two phases:
+
+1. **Policy Evaluation:** Calculates the value of the current policy.
+2. **Policy Improvement:** Updates the policy to be greedy with respect to the new values.
+*This method typically converges in fewer iterations than Value Iteration.*
+
+```
