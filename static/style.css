@@ -5,10 +5,10 @@
     --obs-dark-grey: #7f8c8d;
     
     /* THEME COLORS */
-    --primary-green: #2ecc71; /* Light green for buttons and slider */
-    --app-bg: #dfe6e9;       /* Main page background */
-    --grid-bg: #2c3e50;      /* Grid lines/background */
-    --cell-bg: #ffffff;      /* Individual cell background */
+    --primary-green: #2ecc71; 
+    --app-bg: #dfe6e9;       
+    --grid-bg: #2c3e50;     
+    --cell-bg: #ffffff;      
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +32,7 @@ h1 {
 
 .dashboard {
     display: flex;
-    flex-direction: column; /* Stacks vertically on mobile */
+    flex-direction: column; 
     gap: 30px;
     background: white;
     padding: 30px;
@@ -72,7 +72,7 @@ select {
 /* SLIDER STYLING */
 input[type="range"] {
     width: 100%;
-    accent-color: var(--primary-green); /* Light green slider */
+    accent-color: var(--primary-green); 
     cursor: pointer;
 }
 
@@ -91,7 +91,7 @@ button {
 button:active { transform: scale(0.98); }
 
 .step-btn { 
-    background: var(--primary-green); /* Light green button */
+    background: var(--primary-green); 
 }
 
 .step-btn:hover { background: #27ae60; }
@@ -117,14 +117,13 @@ button:active { transform: scale(0.98); }
 /* GRID WORLD STYLING */
 .grid-container {
     display: grid;
-    /* Change repeat(4, 1fr) to repeat(6, 1fr) */
     grid-template-columns: repeat(6, 1fr); 
     gap: 8px;
     background: var(--grid-bg);
     padding: 8px;
     border-radius: 10px;
     width: 100%;
-    max-width: 600px; /* Increased max-width for the larger 6x6 grid */
+    max-width: 600px; 
     margin: 0 auto;
 }
 
@@ -141,7 +140,7 @@ button:active { transform: scale(0.98); }
 .value-label { font-size: clamp(10px, 2.5vw, 14px); font-weight: bold; color: #636e72; }
 .arrow { font-size: clamp(20px, 5vw, 32px); color: #2d3436; }
 
-/* SPECIAL STATES */
+
 .goal { background-color: var(--goal) !important; color: white; }
 .trap { background-color: var(--trap) !important; color: white; }
 .obstacle { background-color: var(--obs-dark-grey) !important; }
