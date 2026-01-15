@@ -3,6 +3,9 @@ import random
 
 class GridWorldMDP:
     def __init__(self, rows=6, cols=6, gamma=0.9):
+        """
+        Initializes the MDP environment with grid dimensions, rewards, and stochastic transition probabilities.
+        """
         self.rows = rows
         self.cols = cols
         self.gamma = gamma
@@ -14,6 +17,9 @@ class GridWorldMDP:
         self.reset_env()
 
     def reset_env(self):
+        """
+        Regenerates a new map layout with a random number of obstacles at valid positions.
+        """
         self.obstacles = []
         num_obstacles = random.randint(2, 6)
         
@@ -36,11 +42,17 @@ class GridWorldMDP:
         for r, c in self.obstacles: self.policy[r][c] = 'OBS'
 
     def get_reward(self, r, c):
+        """
+        Defines the immediate reward for entering a specific cell (Goal, Trap, or standard step).
+        """
         if (r, c) == (0, 5): return 10.0
         if (r, c) == (1, 5): return -10.0
         return -0.1
 
     def get_next_state(self, r, c, action):
+        """
+        Calculates the resulting coordinate of a move, ensuring the agent remains within boundaries and handles obstacles.
+        """
         if action == 'UP': ns = (max(r-1, 0), c)
         elif action == 'DOWN': ns = (min(r+1, self.rows-1), c)
         elif action == 'LEFT': ns = (r, max(c-1, 0))
@@ -69,6 +81,9 @@ class GridWorldMDP:
         return (self.prob_success * val_intended) + (self.prob_random * val_random)
 
     def value_iteration_step(self):
+        """
+        Performs one sweep of Value Iteration, updating state values using the Bellman Optimality Equation.
+        """
         new_V = np.copy(self.V)
         delta = 0
         for r in range(self.rows):
@@ -89,6 +104,9 @@ class GridWorldMDP:
         return self.V.tolist(), delta
 
     def policy_iteration_step(self):
+        """
+        Executes a cycle of Policy Evaluation followed by Policy Improvement until the policy becomes stable.
+        """
         # Evaluation
         theta = 0.001
         while True:
@@ -128,6 +146,9 @@ class GridWorldMDP:
         return self.V.tolist(), 0.0 if stable else 1.0
 
     def get_current_policy(self, is_value_iter=True):
+        """
+        Returns the optimal directions (arrows) for each state derived from the current Value Function.
+        """
         if not is_value_iter: return self.policy
         derived = []
         for r in range(self.rows):
