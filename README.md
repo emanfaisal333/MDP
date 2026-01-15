@@ -94,5 +94,3 @@ Alternates between two phases:
 1. **Policy Evaluation:** Calculates the value of the current policy.
 2. **Policy Improvement:** Updates the policy to be greedy with respect to the new values.
 *This method typically converges in fewer iterations than Value Iteration.*
-
-```
