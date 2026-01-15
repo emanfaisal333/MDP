@@ -33,34 +33,21 @@ cd mdp-visualization
 
 ```
 
-### 2. Set up a Virtual Environment (Optional but Recommended)
-
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
-
-# Mac/Linux
-python3 -m venv venv
-source venv/bin/activate
-
-```
-
-### 3. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 
 ```
 
-### 4. Run the Application
+### 3. Run the Application
 
 ```bash
 python app.py
 
 ```
 
-### 5. Open in Browser
+### 4. Open in Browser
 
 Visit `http://127.0.0.1:5000` in your web browser.
 
